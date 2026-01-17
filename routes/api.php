@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../controllers/AuthController.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -7,6 +8,13 @@ $scriptName = $_SERVER['SCRIPT_NAME'];
 
 $uri = substr($requestUri, strlen($scriptName));
 $uri = $uri === '' ? '/' : $uri;
+
+//login
+if ($method === 'POST' && $uri === '/login') {
+    $controller = new AuthController();
+    $controller->login();
+    exit;
+} 
 
 //test api
 if ($method === 'GET' && $uri === '/ping') {
