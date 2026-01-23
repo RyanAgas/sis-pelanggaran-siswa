@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/PelanggaranController.php';
+require_once __DIR__ . '/../controllers/PembinaanController.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -51,11 +52,37 @@ if ($method === 'DELETE' && preg_match('#^/pelanggaran/(\d+)$#', $uri, $matches)
     exit;
 }
 
+//pembinaan
+if ($method == 'GET' && $uri === '/pembinaan') {
+    $controller = new PembinaanController();
+    $controller->index();
+    exit;
+}
+
+if ($method === 'POST' && $uri === '/pembinaan') {
+    $controller = new PembinaanController();
+    $controller->store();
+    exit;
+}
+
+//update pembinaan
+if ($method === 'PUT' && preg_match('#^/pembinaan/(\d+)$#', $uri, $matches)) {
+    $controller = new PembinaanController();
+    $controller->update($matches[1]);
+    exit;
+}
+
+//DELETE Pembinaan
+if ($method == 'DELETE' && preg_match('#^/pembinaan/(\d+)$#', $uri, $matches)) {
+    $controller = new PembinaanController();
+    $controller->destroy($matches[1]);
+}
+
 //test api
 if ($method === 'GET' && $uri === '/ping') {
     echo json_encode([
         "status" => "OK",
-        "message" => "API modulmu sudah berjalan"
+        "message" => "API modul sudah berjalan"
     ]);
     exit;
 
@@ -66,7 +93,4 @@ echo json_encode([
     "message" => "endpoint tidak ditemukan"
 ]);
 exit;
-
-
-
 }
