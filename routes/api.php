@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../controllers/AuthController.php';
+require_once __DIR__ . '/../controllers/PelanggaranController.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -16,6 +17,40 @@ if ($method === 'POST' && $uri === '/login') {
     exit;
 } 
 
+//log out
+if ($method === 'POST' && $uri === '/logout') {
+    requireLogin(); // pastikan sudah login
+    logout();
+    exit;
+}
+
+//pelanggaran
+if ($method === 'GET' && $uri === '/pelanggaran') {
+    $controller = new PelanggaranController();
+    $controller->index();
+    exit;
+}
+
+if ($method === 'POST' && $uri === '/pelanggaran') {
+    $controller = new PelanggaranController();
+    $controller->store();
+    exit;
+}
+
+// Update Pelanggaran
+if ($method === 'PUT' && preg_match('#^/pelanggaran/(\d+)$#', $uri, $matches)) {
+    $controller = new PelanggaranController();
+    $controller->update($matches[1]);
+    exit;
+}
+
+// Delete pelanggaran
+if ($method === 'DELETE' && preg_match('#^/pelanggaran/(\d+)$#', $uri, $matches)) {
+    $controller = new PelanggaranController();
+    $controller->destroy($matches[1]);
+    exit;
+}
+
 //test api
 if ($method === 'GET' && $uri === '/ping') {
     echo json_encode([
@@ -31,4 +66,7 @@ echo json_encode([
     "message" => "endpoint tidak ditemukan"
 ]);
 exit;
+
+
+
 }
