@@ -3,6 +3,9 @@
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../config/auth.php';
 require_once __DIR__ . '/../models/Pembinaan.php';
+require_once __DIR__ . '/../middleware/AuthMiddleware.php';
+require_once __DIR__ . '/../middleware/RoleMiddleware.php';
+
 
 class PembinaanController {
 
@@ -18,7 +21,8 @@ class PembinaanController {
 // GET /Pembinaan
     public function index()
     {
-        requireLogin();
+    AuthMiddleware::check();
+    RoleMiddleware::allow(['admin', 'guru_bk']);
 
         $data = $this->pembinaan->getAll();
 
@@ -32,7 +36,8 @@ class PembinaanController {
 // POST /Pembinaan
     public function store() {
 
-        requireLogin();
+        AuthMiddleware::check();
+        RoleMiddleware::allow(['guru_bk']);
 
         $input = json_decode(file_get_contents("php://input"), true);
 
@@ -71,13 +76,15 @@ class PembinaanController {
 
 //PUT /pembinaa/{id}
     public function update($id) {
-        requireLogin();
+         AuthMiddleware::check();
+        RoleMiddleware::allow(['guru_bk']);
+
 
         $input = json_decode(file_get_contents("php://input"), true);
 
         $required = ['pelanggaran_id', 'tindakan', 'tanggal'];
         foreach ($required as $field) {
-            if(!iset($input[$field])) {
+            if(!isset($input[$field])) {
                 http_response_code(400);
                 echo json_encode([
                     "status" => "error",
@@ -112,7 +119,9 @@ class PembinaanController {
     //DELETE /pembinaan/{id}
     public function destroy($id) {
 
-        requireLogin();
+         AuthMiddleware::check();
+        RoleMiddleware::allow(['guru_bk']);
+
 
         $result = $this->pembinaan->delete($id);
 
