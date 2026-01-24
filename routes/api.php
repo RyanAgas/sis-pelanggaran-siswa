@@ -4,6 +4,8 @@ require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/PelanggaranController.php';
 require_once __DIR__ . '/../controllers/PembinaanController.php';
 
+
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Ambil URI yang bersih

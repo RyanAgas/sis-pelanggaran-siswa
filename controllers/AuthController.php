@@ -65,4 +65,19 @@ class AuthController {
         ]);
         exit;
     }
+
+    public function logout()
+{
+    AuthMiddleware::check(); 
+
+    unset($_SESSION['user']);
+
+    session_destroy();
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Logout berhasil"
+    ]);
+    exit;
+}
 }
