@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../models/Pelanggaran.php';
+require_once __DIR__ . '/../middleware/AuthMiddleware.php';
+require_once __DIR__ . '/../middleware/RoleMiddleware.php';
+
 
 class PelanggaranController
 {
@@ -20,7 +23,8 @@ class PelanggaranController
     public function index()
     {
 
-    requireLogin();
+    AuthMiddleware::check();
+    RoleMiddleware::allow(['admin', 'guru_bk']);
 
         $data = $this->pelanggaran->getAll();
 
@@ -35,7 +39,8 @@ class PelanggaranController
     public function store()
     {
 
-    requireLogin();
+    AuthMiddleware::check();
+    RoleMiddleware::allow(['guru_bk']);
 
         $input = json_decode(file_get_contents("php://input"), true);
 
@@ -72,7 +77,8 @@ class PelanggaranController
     //PUT /pelanggaran/{id}
     public function update($id)
 {
-    requireLogin(); 
+   AuthMiddleware::check();
+    RoleMiddleware::allow(['guru_bk']); 
 
     $input = json_decode(file_get_contents("php://input"), true);
 
@@ -108,7 +114,8 @@ class PelanggaranController
 //DELETE /pelanggaran/{id}
 public function destroy($id)
 {
-    requireLogin(); 
+    AuthMiddleware::check();
+    RoleMiddleware::allow(['guru_bk']);
 
     $result = $this->pelanggaran->delete($id);
 
