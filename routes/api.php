@@ -5,6 +5,7 @@ require_once __DIR__ . '/../controllers/PelanggaranController.php';
 require_once __DIR__ . '/../controllers/PembinaanController.php';
 require_once __DIR__ . '/../controllers/LaporanController.php';
 require_once __DIR__ . '/../controllers/SiswaController.php';
+require_once __DIR__ . '/../controllers/UserController.php';
 
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -99,6 +100,12 @@ if ($method === 'GET' && $uri === '/siswa') {
 if ($method === 'GET' && preg_match('#^/siswa/(\d+)$#', $uri, $matches)) {
     $controller = new SiswaController();
     $controller->show($matches[1]);
+    exit;
+}
+
+if ($method === 'GET' && $uri === '/users') {
+    $controller = new UserController();
+    $controller->index();
     exit;
 }
 

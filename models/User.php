@@ -18,7 +18,7 @@ class User {
                     users.user_id,
                     users.name,
                     users.email,
-                    users.role_name
+                    roles.role_name
                 FROM users
                 JOIN roles ON users.role_id = roles.role_id
                 ";
