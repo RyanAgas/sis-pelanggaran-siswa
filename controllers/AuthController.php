@@ -1,8 +1,14 @@
 <?php
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 
 class AuthController {
+
+    private $jwtKey = "uas-backend-secret-key-2026-php-backend-si-pelanggaran-siswa-project";
     private $db;
 
     public function __construct()
@@ -16,7 +22,7 @@ class AuthController {
         $input = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($input['email']) || !isset($input['password'])) {
-            http_response_code(401);
+            http_response_code(400);
             echo json_encode([
                 "status" => "error",
                 "message" => "Email dan password wajib kamu isi!"
@@ -50,7 +56,7 @@ class AuthController {
                 exit;
             }
 
-        //simpan ke session 
+        //session login
         $_SESSION['user'] = [
             "user_id" => $user['user_id'],
             "name" => $user['name'],
@@ -58,9 +64,24 @@ class AuthController {
             "role_name" => $user['role_name']
         ];
 
+        //JWT token
+        $payload = [
+            "iss" => "si-pelanggaran-siswa",
+            "iat" => time(),
+            "exp" => time() + (60 * 60),
+            "data" => [
+                "user_id" => $user['user_id'],
+                "email" => $user['email'],
+                "role" => $user['role_name']
+            ]
+        ];
+
+        $token = JWT::encode($payload, $this->jwtKey, 'HS256');
+
         echo json_encode([
             "status" => "success",
             "message" => "Login berhasil",
+            "token" => $token,
             "data" => $_SESSION['user']
         ]);
         exit;
