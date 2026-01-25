@@ -4,6 +4,7 @@ require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/PelanggaranController.php';
 require_once __DIR__ . '/../controllers/PembinaanController.php';
 require_once __DIR__ . '/../controllers/LaporanController.php';
+require_once __DIR__ . '/../controllers/SiswaController.php';
 
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -85,6 +86,19 @@ if ($method === 'DELETE' && preg_match('#^/pembinaan/(\d+)$#', $uri, $matches)) 
 if ($method === 'GET' && $uri === '/laporan/poin-siswa') {
     $controller = new LaporanController();
     $controller->poinSiswa();
+    exit;
+}
+
+// Siswa
+if ($method === 'GET' && $uri === '/siswa') {
+    $controller = new SiswaController();
+    $controller->index();
+    exit;
+}
+
+if ($method === 'GET' && preg_match('#^/siswa/(\d+)$#', $uri, $matches)) {
+    $controller = new SiswaController();
+    $controller->show($matches[1]);
     exit;
 }
 

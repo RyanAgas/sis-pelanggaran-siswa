@@ -1,21 +1,30 @@
 <?php
-class Siswa {
-    private $db;
+
+class Siswa
+{
+    private $conn;
     private $table = "siswa";
 
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct($db)
+    {
+        $this->conn = $db;
     }
 
-    public function getAll() {
-        $query = "SELECT * FROM " . $this->table;
-        return $this->db->query($query)->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM " . $this->table . " WHERE id = ?");
-        $stmt->bind_param("i", $id);
+    public function getAll()
+    {
+        $query = "SELECT siswa_id, nis, nama, kelas FROM {$this->table}";
+        $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getById($id)
+    {
+        $query = "SELECT siswa_id, nis, nama, kelas FROM {$this->table} WHERE siswa_id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([
+            ':id' => $id
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
