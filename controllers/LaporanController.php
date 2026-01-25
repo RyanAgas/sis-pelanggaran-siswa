@@ -17,7 +17,7 @@ class LaporanController {
     public function poinSiswa()
     {
         AuthMiddleware::check();
-        RoleMiddleware::allow(['admin']);
+        RoleMiddleware::allow(['admin', 'kepala_sekolah']);
 
         $query = "
                 SELECT 
