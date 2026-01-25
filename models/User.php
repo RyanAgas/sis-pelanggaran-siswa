@@ -1,37 +1,53 @@
 <?php
 
 class User {
-    private $db;
+
+    private $conn;
     private $table = "users";
 
-    public $id;
-    public $username;
-    public $password;
-    public $role_id;
-
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct($db)
+    {
+        $this->conn = $db;
     }
 
-    // Method untuk mengambil semua user
-    public function getAll() {
-        $query = "SELECT * FROM " . $this->table;
-        $result = $this->db->query($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
+    //Ambil semua user tanpa pw
+    public function getAll()
+    {
+        $query = "
+                SELECT 
+                    users.user_id,
+                    users.name,
+                    users.email,
+                    users.role_name
+                FROM users
+                JOIN roles ON users.role_id = roles.role_id
+                ";
 
-    // Method penting: Verifikasi Login
-    public function login($username, $password) {
-        $query = "SELECT * FROM " . $this->table . " WHERE username = ?";
-        // Gunakan prepared statements untuk keamanan (SQL Injection)
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("s", $username);
+        $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        $user = $stmt->get_result()->fetch_assoc();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-        if ($user && password_verify($password, $user['password'])) {
-            return $user;
-        }
-        return false;
+    //Ambil user berdasarkan emailnya (untuk AuthController)
+    public function getByEmail($email)
+    {
+        $query = "
+                SELECT
+                    users.user_id,
+                    users.name,
+                    users.email,
+                    users.password,
+                    roles.role_name
+                FROM users
+                JOIN roles ON users.role_id = roles.role_id
+                WHERE users.email = :email
+                LIMIT 1
+            ";  
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([
+            ':email' => $email
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
