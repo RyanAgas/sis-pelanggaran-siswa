@@ -28,11 +28,20 @@ melalui API menggunakan Thunder Client atau Postman.
 | guru_bk | Login, input dan update pelanggaran serta pembinaan |
 | kepala_sekolah | Login dan melihat laporan saja |
 
+## Urutan Demo
+1. Login sebagai Guru BK
+2. Tambah pelanggaran
+3. Tambah pembinaan
+4. Login sebagai Admin
+5. Lihat laporan
+6. Login sebagai Kepala Sekolah
+7. Lihat laporan (read only)
+
 ## Authentication
 POST /index.php/login
 Body JSON: {
-  "email": "admin@sekolah.com",
-  "password": "admin123"
+  "email": "",
+  "password": ""
 }
 
 POST /index.php/logout (untuk logout)
