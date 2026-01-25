@@ -37,13 +37,13 @@ Body JSON: {
 
 POST /index.php/logout (untuk logout)
 
-#Siswa (Read Only)
+## Siswa (Read Only)
 GET /index.php/siswa
 
-#Get siswa by ID
+## Get siswa by ID
 GET /index.php/siswa/{id}
 
-# Pelanggaran
+## Pelanggaran
 GET /index.php/pelanggaran
 
 #Tambah Pelanggaran
@@ -56,7 +56,7 @@ Body Json: {
   "tanggal": ""
 }
 
-# Update Pelanggaran
+## Update Pelanggaran
 PUT /index.php/pelanggaran/{id}
 Body JSON: Body Json: {
   "siswa_id": ,
@@ -66,13 +66,13 @@ Body JSON: Body Json: {
   "tanggal": ""
 }
 
-# Delete Pelanggaran
+## Delete Pelanggaran
 DELETE /index.php/pelanggaran/{id}
 
 ## Pembinaan
 GET /index.php/pembinaan
 
-# Tambah Pembinaan
+## Tambah Pembinaan
 POST /index.php/pembinaan
 Body JSON: {
   "pelanggaran_id": ,
@@ -81,7 +81,7 @@ Body JSON: {
   "tanggal": ""
 }
 
-# Update Pembinaan
+## Update Pembinaan
 PUT /index.php/pembinaan/{id}
 Body Json:  {
   "pelanggaran_id": ,
@@ -90,13 +90,13 @@ Body Json:  {
   "tanggal": ""
 }
 
-# Delete Pembinaan
+## Delete Pembinaan
 DELETE /index.php/pembinaan/{id}
 
-# Laporan 
+## Laporan 
 GET /index.php/laporan/poin-siswa
 
-# Users (Admin Only)
+## Users (Admin Only)
 GET /index.php/users
 
 
