@@ -33,7 +33,7 @@ melalui API menggunakan Thunder Client atau Postman.
 2. Tambah pelanggaran
 3. Tambah pembinaan
 4. Login sebagai Admin
-5. Lihat laporan
+5. Lihat dan Monitoring Data
 6. Login sebagai Kepala Sekolah
 7. Lihat laporan (read only)
 
